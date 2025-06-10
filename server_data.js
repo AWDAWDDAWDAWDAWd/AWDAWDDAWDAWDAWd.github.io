@@ -1,0 +1,1 @@
+const serverData = {"status": "online", "ip": "129.224.211.210", "port": "25565", "version": "1.16.5", "last_update": "2025-06-09T19:39:07.164377"};
