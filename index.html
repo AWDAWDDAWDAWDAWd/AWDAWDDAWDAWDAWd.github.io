@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Server - AWDAWDDAWDAWDAWd</title>
+    <meta name="description" content="Minecraft 1.16.5 Server Status and Information">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23green'><path d='M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M4,6V10H8V6H4M10,6V10H14V6H10M16,6V10H20V6H16M4,12V16H8V12H4M10,12V16H14V12H10M16,12V16H20V12H16M4,18V20H8V18H4M10,18V20H14V18H10M16,18V20H20V18H16Z'/></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .server-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-online {
+            background-color: #4CAF50;
+            box-shadow: 0 0 10px #4CAF50;
+        }
+        
+        .status-offline {
+            background-color: #f44336;
+            box-shadow: 0 0 10px #f44336;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .server-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+        
+        .info-row:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .info-label {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .info-value {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .info-value:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .copy-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+        }
+        
+        .last-update {
+            margin-top: 20px;
+            font-size: 0.9em;
+            opacity: 0.8;
+            font-style: italic;
+        }
+        
+        .minecraft-logo {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M4,6V10H8V6H4M10,6V10H14V6H10M16,6V10H20V6H16M4,12V16H8V12H4M10,12V16H14V12H10M16,12V16H20V12H16M4,18V20H8V18H4M10,18V20H14V18H10M16,18V20H20V18H16Z"/></svg>') center/contain no-repeat;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .discord-link {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(114, 137, 218, 0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(114, 137, 218, 0.3);
+        }
+        
+        .discord-link a {
+            color: #7289da;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .discord-link a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .server-title {
+                font-size: 2em;
+            }
+            
+            .info-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .copy-btn, .refresh-btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="minecraft-logo"></div>
+        <h1 class="server-title">Minecraft Server</h1>
+        
+        <div class="server-info">
+            <div class="info-row">
+                <span class="info-label">Status:</span>
+                <span class="info-value">
+                    <span class="status-indicator status-offline" id="status-indicator"></span>
+                    <span id="server-status">OFFLINE</span>
+                </span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label">Server Address:</span>
+                <span class="info-value" id="server-address">Server not started</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label">Version:</span>
+                <span class="info-value">1.16.5</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label">Website Address:</span>
+                <span class="info-value">AWDAWDDAWDAWDAWd.github.io</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label">Max Players:</span>
+                <span class="info-value">20</span>
+            </div>
+        </div>
+        
+        <button class="copy-btn" onclick="copyServerAddress()">📋 Copy Server Address</button>
+        <button class="copy-btn" onclick="copyWebsiteAddress()">🌐 Copy Website</button>
+        
+        <button class="refresh-btn" onclick="refreshStatus()">🔄 Refresh Status</button>
+        
+        <div class="discord-link">
+            <p>🤖 Control the server via Discord bot commands!</p>
+            <p>Use <code>!start</code>, <code>!stop</code>, <code>!status</code> in your Discord server</p>
+        </div>
+        
+        <div class="last-update">
+            Last updated: <span id="last-update">2025-06-09T19:34:01.272798</span>
+        </div>
+    </div>
+
+    <script>
+        // Server data - this will be updated by the Discord bot
+        let currentServerData = {"status": "offline", "ip": "Server not started", "port": "25565", "version": "1.16.5", "last_update": "2025-06-09T19:34:01.272798"};
+        
+        // Check for updates from localStorage (updated by bot)
+        function loadServerData() {
+            const savedData = localStorage.getItem('minecraftServerData');
+            if (savedData) {
+                try {
+                    currentServerData = JSON.parse(savedData);
+                    updateUI();
+                } catch (e) {
+                    console.error('Error parsing server data:', e);
+                }
+            }
+        }
+        
+        // Update UI with current server data
+        function updateUI() {
+            const statusElement = document.getElementById('server-status');
+            const indicatorElement = document.getElementById('status-indicator');
+            const addressElement = document.getElementById('server-address');
+            const updateElement = document.getElementById('last-update');
+            
+            // Update status
+            if (currentServerData.status === 'online') {
+                statusElement.textContent = 'ONLINE';
+                indicatorElement.className = 'status-indicator status-online';
+                addressElement.textContent = `${currentServerData.ip}:${currentServerData.port}`;
+            } else {
+                statusElement.textContent = 'OFFLINE';
+                indicatorElement.className = 'status-indicator status-offline';
+                addressElement.textContent = 'Server not started';
+            }
+            
+            // Update last update time
+            updateElement.textContent = new Date(currentServerData.last_update).toLocaleString();
+        }
+        
+        // Copy server address to clipboard
+        function copyServerAddress() {
+            const address = document.getElementById('server-address').textContent;
+            if (address !== 'Server not started') {
+                navigator.clipboard.writeText(address).then(() => {
+                    showNotification('✅ Server address copied to clipboard!', '#4CAF50');
+                }).catch(() => {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = address;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showNotification('✅ Server address copied to clipboard!', '#4CAF50');
+                });
+            } else {
+                showNotification('❌ Server is not running!', '#f44336');
+            }
+        }
+        
+        // Copy website address to clipboard
+        function copyWebsiteAddress() {
+            const website = 'AWDAWDDAWDAWDAWd.github.io';
+            navigator.clipboard.writeText(website).then(() => {
+                showNotification('✅ Website address copied to clipboard!', '#4CAF50');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = website;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('✅ Website address copied to clipboard!', '#4CAF50');
+            });
+        }
+        
+        // Show notification
+        function showNotification(message, color = '#4CAF50') {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(n => n.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.background = color;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 3000);
+        }
+        
+        // Refresh server status
+        function refreshStatus() {
+            showNotification('🔄 Refreshing status...', '#2196F3');
+            
+            // Try to fetch updated data from GitHub Pages API or reload
+            setTimeout(() => {
+                loadServerData();
+                showNotification('✅ Status refreshed!', '#4CAF50');
+            }, 1000);
+        }
+        
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            loadServerData();
+        }, 30000);
+        
+        // Load server data on page load
+        window.addEventListener('load', () => {
+            loadServerData();
+        });
+        
+        // Add click handlers for info values
+        document.querySelectorAll('.info-value').forEach(element => {
+            element.addEventListener('click', function() {
+                const text = this.textContent.trim();
+                if (text && text !== 'Server not started') {
+                    navigator.clipboard.writeText(text).then(() => {
+                        showNotification(`✅ Copied: ${text}`, '#4CAF50');
+                    }).catch(() => {
+                        console.log('Clipboard not available');
+                    });
+                }
+            });
+        });
+        
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'r':
+                        e.preventDefault();
+                        refreshStatus();
+                        break;
+                    case 'c':
+                        e.preventDefault();
+                        copyServerAddress();
+                        break;
+                }
+            }
+        });
+        
+        // Service Worker for offline functionality
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(console.error);
+        }
+    </script>
+</body>
+</html>
